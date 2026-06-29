@@ -1,6 +1,7 @@
 ---
 paths:
   - "**/*.py"
+  - "pyproject.toml"
 ---
 
 # Python development rules
@@ -98,12 +99,61 @@ uv run pip-audit
 ```
 
 ## Code standards
-- Keep functions small, single-purpose, and easy to test.
-- Ensure all public functions, interfaces, and non-private variables are type-checked.
+- Keep functions small (a few lines), single-purpose, and easy to test (if public).
+- Ensure all public functions, interfaces, and non-private variables are type-checked and tested.
+- Always strive to reduce the size of the public API.
 - Never make an exception like "if TYPE_CHECKED: ...", assume all code is type-checked.
-- Prefer expressive code over comments.
-- Only comment when the logic is genuinely hard to understand.
+- Always prefer expressive code over adding comments.
+- Extract logic into short, well-named functions or classes that **describe intent**.
+- Only comment when the logic still is genuinely hard to understand.
 - Never add imports anywhere except at the head of the module.
+- Follow the SOLID principles when designing or writing code: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion.
+
+**Bad: opaque condition**
+```python
+if user.role == 'admin' and \
+   user.verified and \
+   not user.suspended and \
+   time.time() < user.expires_at:
+    show_dashboard()
+```
+
+**Good: expressive logic**
+```python
+class User:
+	...
+    def can_access_dashboard(self) -> bool:
+        return (self.role == 'admin'
+                and self.verified
+                and not self.suspended
+                and not self._has_session_expired())
+
+    def _has_session_expired(self) -> bool:
+        return time.time() >= self.expires_at
+
+if user.can_access_dashboard():
+    show_dashboard()
+```
+
+### Error handling
+- Define custom error types/classes
+- Never silently catch errors without handling
+- Use specific catch blocks instead of catching all errors
+- Log errors with sufficient context for debugging (e.g. user ID, document ID, relevant settings)
+
+### Logging
+- Provide context through `LoggerAdapater` and `Filter` classes.
+- Capture and track context with the `contextvars` StdLib package.
+- Refer to https://docs.python.org/3/howto/logging.html and https://docs.python.org/3/howto/logging-cookbook.html for proper logging practices.
+
+### Dependencies
+- ONLY ADD DEPENDENCIES WHEN NEEDED.
+- Do not add dependencies just because they are planned.
+- Only add a dependency when writing code that needs it.
+- Only add dependencies ad hoc if the project does not compile or start because of a missing dependency.
+
+### Documentation
+- When creating code blocks in documentation, do not add comments inside the code blocks; Add the comments outside, in the text area.
 
 ## Definition of Done
 After making a test green and the refactoring is done, ensure all tools pass or fix any issues.

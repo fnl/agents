@@ -8,7 +8,7 @@ Best practices for continual code refactoring sessions.
 
  Warning: WORK IN PROGRESS skill
 
-See [clean-code](clean-code.md) for code writing and design best practices.
+See [Clean Code](Clean%20Code.md) for code writing and design best practices.
 Meanwhile, the [Code Review Pyramid](Code%20Review%20Pyramid.md) contains a hierarchy of questions to ask yourself in code reviews.
 Once you have written some code, this document explains how to keep it in shape.
 

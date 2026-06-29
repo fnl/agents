@@ -1,10 +1,15 @@
 ---
 paths:
   - "**/*.ts"
+  - "eslint.config.mjs"
+  - "tsconfig.json"
+  - "package.json"
 ---
 
 # TypeScript development rules
-These rules describe how you must develop any TypeScript projects.
+These rules describe how to develop TypeScript projects.
+
+## Use `pnpm`
 Use the `pnpm` package and project manager to operate all projects.
 
 If `pnpm` is not available in your node environment, use the following command to install `pnpm` for your node version:
@@ -12,7 +17,7 @@ If `pnpm` is not available in your node environment, use the following command t
 corepack enable pnpm
 ```
 
-Once in a dedicated directory, the project can be set up with:
+Once in a dedicated directory, the project can be set up with the following steps:
 ```bash
 pnpm init
 pnpm add -D typescript
@@ -20,26 +25,26 @@ pnpm exec tsc --init
 git init -b main
 ```
 
-## Assumptions
+## Directory structure
 - Source code is in `$CODE/` (e.g., `src/`, `mypack/`, etc.)
 - Tests are in `tests/`
-- All tools will be run via `pnpm exec` (do not invoke tools directly).
 
-## Required tools
+## Required tool use
+- All tools will be run via `pnpm exec` (do not invoke tools directly).
 - Prettier for formatting (might be "integrated" into ESLint)
 - ESLint (flat config) + `typescript-eslint` for linting
 - TypeScript (`tsc`) for type-checking and transpiling
-- pnpm audit for dependency check-ups
+- `pnpm audit` for dependency check-ups
 - Vitest for tests
 
-Set up the project and install the tool-chain into the project with `pnpm`:
+Set up the project and install any missing tools into the project with `pnpm`:
 ```bash
 pnpm add -D eslint @eslint/js typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-security prettier vitest
 ````
 
-If the project has already been set up, there might be a concurrently-based watcher script ready in `package.json` to run all the tools, such as `pnpm dev` to run all but `pnpm audit` on any file changes. (Remember that prettier formatting can be built into the eslint watcher.)
+If the project has already been set up, there might be a concurrently-based watcher script ready in `package.json` to run all the tools, such as `pnpm dev` to run all. Remember to use `pnpm audit` on any package file changes. (Remember that prettier formatting can be built into the eslint watcher.)
 
-### Format the code
+### Format the code with `prettier`
 Let prettier automatically fix as many issues as possible:
 ```bash
 pnpm exec prettier --write "$CODE/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}" "tests/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}"
@@ -84,7 +89,7 @@ pnpm exec tsc -p tsconfig.json --noEmit
 ```
 
 ### Do test-driven development
-Write tests before implementation. Follow the [tdd](Tech/Software%20Development/Skills/tdd/SKILL.md) skill guidelines. And run the tests with `vitest`:
+Write tests before implementation. Follow the [/tdd](Tech/Agents/skills/tdd/SKILL.md) skill guidelines. And run the tests with `vitest`:
 
 ```bash
 pnpm exec vitest run tests
@@ -100,12 +105,96 @@ pnpm audit
 - Keep functions small, single-purpose, and testable.
 - Prefer explicit types at module boundaries and public APIs.
 - Prefer clarity in code over comments; only comment when logic is genuinely hard to understand.
+- DO NOT import code anywhere else than at the top of a code file.
 
-### Function Ordering
+### Function naming
+
+Take excessive care to provide clear names for functions the lead to readable prose.
+Instead of adding comments to complex code, consider extracting that code to a function that makes its purpose clear without the need of comments.
+
+**Bad: what does this condition mean?**
+```typescript
+if (user.role === 'admin' && 
+    user.verified &&
+    !user.suspended &&
+    Date.now() < user.expiresAt) {
+  showDashboard();
+}
+```
+
+**Good — names that eliminate the need for comments:**
+```typescript
+class User {
+  // ...
+  canAccessDashboard(): boolean {
+    return this.role === 'admin'
+      && this.verified
+      && !this.suspended
+      && !this.hasSessionExpired();
+  }
+
+  private hasSessionExpired(): boolean {
+    return Date.now() >= this.expiresAt;
+  }
+}
+
+if (user.canAccessDashboard()) {
+  showDashboard();
+}
+```
+
+---
+
+**Bad: what is this doing?**
+```typescript
+function proc(data: string[]): string[] {
+  return data.filter(x => x.trim() !== '').map(x => x.toLowerCase().replace(/\s+/g, '-'));
+}
+```
+
+**Good: each transformation step has a name**
+```typescript
+function toUrlSlugs(tags: string[]): string[] {
+  return tags.filter(isNonEmpty).map(toSlug);
+}
+
+function isNonEmpty(s: string): boolean {
+  return s.trim() !== '';
+}
+
+function toSlug(s: string): string {
+  return s.toLowerCase().replace(/\s+/g, '-');
+}
+```
+
+---
+
+**Bad: magic number, unclear intent**
+```typescript
+function calc(price: number, qty: number): number {
+  return price * qty * (1 - (qty >= 10 ? 0.15 : qty >= 5 ? 0.08 : 0));
+}
+```
+
+**Good: discount tiers made explicit**
+```typescript
+function applyBulkDiscount(price: number, quantity: number): number {
+  const discount = getBulkDiscountRate(quantity);
+  return price * quantity * (1 - discount);
+}
+
+function getBulkDiscountRate(quantity: number): number {
+  if (quantity >= 10) return 0.15;
+  if (quantity >= 5)  return 0.08;
+  return 0;
+}
+```
+
+### Function ordering
 
 Main function at top, helpers below in logical order.
 
-### Helper Functions
+### Helper functions
 
 Use regular functions, not const arrows:
 
@@ -117,19 +206,19 @@ function goodHelper(param: string): RVal {
 const badHelper = (param: string): RVal => ({...})
 ```
 
-### Error Handling
+### Error handling
 
 - Define custom error types/classes
 - Never silently catch errors without handling
 - Use specific catch blocks instead of catching all errors
 - Log errors with sufficient context for debugging
 
-### Async/Await Patterns
+### Async/await patterns
 
 - Prefer async/await over Promise chains
 - Always return Promises properly from async functions
 - Handle Promise rejections appropriately
-- Use Promise.all() for parallel operations when applicable
+- Use `Promise.all()` for parallel operations when applicable
 
 ### Regex Iteration
 
