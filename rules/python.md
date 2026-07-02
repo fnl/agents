@@ -86,6 +86,8 @@ The use of `Any` is a smell. Only use `Any` if there is a technically clear just
 uv run ty $CODE
 ```
 
+- `ty` suppression syntax: `# type: ignore` (plain — bracketed error codes are not supported)
+
 ### Do test-driven development
 Write failing tests before implementation. Follow [@testing](Tech/Software%20Development/Skills/tdd/SKILL.md) guidelines.  And run the tests with `pytest`:
 ```bash
