@@ -6,9 +6,14 @@ disable-model-invocation: true
 
 Implement the work described by the user in the PRD or issues.
 
-Follow the [@GUIDELINES.md](GUIDELINES.md) for all your work.
+Follow the [@GUIDELINES.md](GUIDELINES.md) for all your work:
 
-Use the /tdd skill wherever possible, at pre-agreed seams.
+1. Think Before Coding: **Don't assume. Don't hide confusion. Surface tradeoffs.**
+2. Simplicity First: **Minimum code that solves the problem. Nothing speculative.**
+3. Surgical Changes: **Touch only what you must. Clean up only your own mess.**
+4. Goal-Driven Execution: **Define success criteria upfront. Loop until verified.** 
+
+**Use the /tdd skill wherever possible, at pre-agreed seams.**
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
