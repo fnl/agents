@@ -37,27 +37,26 @@ The `uv init` step might optionally take `--app`, `--lib`, or `--package` as arg
 - **Never** add import statements anywhere else than the header of a module.
 
 ## Required tools
-- black (code formatting)
-- ruff (lint, including bandit-like security audit)
+- ruff (code formatting, lint, including bandit-like security audit)
 - ty (type safety)
 - pytest (test runner)
 - pip-audit (dependencies audit)
 
 Install tool-chain into the project environment with `uv`:
 ```bash
-uv add --dev black ruff ty pytest pip-audit
+uv add --dev ruff ty pytest pip-audit
 ````
 
 ### Format the code
-Black will automatically fix any code formatting issues.
+Ruff will automatically fix any code formatting issues.
 ```bash
-uv run black $CODE tests
+uv run ruff format $CODE tests
 ```
 
 ### Lint and auto-fix where possible
 Use an extensive ruleset for security, bugs, and other poor coding habits.
 Enforce PEP8 naming with N, too.
-`black` handles line lengths, so that can be ignored.
+Ruff formatting handles line lengths, so that can be ignored.
 ```bash
 uv run ruff check $CODE tests --select E,F,W,S,B,C4,I,N --ignore E501 --fix
 ```
@@ -75,9 +74,6 @@ select = [
     "I",   # isort
     "N",   # pep8-naming
 ]
-ignore = [
-    "E501",  # line too long, handled by black
-]
 ```
 
 ### Write type-safe code
@@ -86,7 +82,7 @@ The use of `Any` is a smell. Only use `Any` if there is a technically clear just
 uv run ty $CODE
 ```
 
-- `ty` suppression syntax: `# type: ignore` (plain — bracketed error codes are not supported)
+- `ty` suppression syntax: `# type: ignore` (plain — bracketed error codes are not supported).
 
 ### Do test-driven development
 Write failing tests before implementation. Follow [@testing](Tech/Software%20Development/Skills/tdd/SKILL.md) guidelines.  And run the tests with `pytest`:
@@ -110,6 +106,8 @@ uv run pip-audit
 - Only comment when the logic still is genuinely hard to understand.
 - Never add imports anywhere except at the head of the module.
 - Follow the SOLID principles when designing or writing code: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion.
+- Before writing manual conversion glue to bridge a third-party library with stdlib, check for a compat/interop submodule (e.g. `<pkg>.compat`).
+- Closed sets of string values used across call sites (error codes, statuses, taxonomies) should be an `Enum`, never repeated literals.
 
 **Bad: opaque condition**
 ```python
@@ -162,7 +160,7 @@ After making a test green and the refactoring is done, ensure all tools pass or 
 Note that `ruff` has to be configured in the `pyproject.toml` file or you need to use the extended arguments to select rulesets shown above in the linting section.
 
 ```bash
-uv run black $CODE tests
+uv run ruff format $CODE tests
 uv run ty $CODE
 uv run ruff check $CODE tests --fix
 uv run pytest tests
@@ -170,6 +168,6 @@ uv run pip-audit
 ```
 
 ### Git pre-commit hooks to test DoD
-Instead of running the above checks every time manually, create git commit hooks for black, ty, ruff, and pytest.
+Instead of running the above checks every time manually, create git commit hooks for ruff, ty, and pytest.
 Set the proper hooks up using `uvx pre-commit` and a `.pre-commit-config.yaml` configuration, and mention that approach in the project's README.
 Run pip-audit only when you add a dependency.
