@@ -37,7 +37,7 @@ The `uv init` step might optionally take `--app`, `--lib`, or `--package` as arg
 - **Never** add import statements anywhere else than the header of a module.
 
 ## Required tools
-- ruff (code formatting, lint, including bandit-like security audit)
+- ruff (code formatting, linting, including bandit-like security audit)
 - ty (type safety)
 - pytest (test runner)
 - pip-audit (dependencies audit)
@@ -61,7 +61,7 @@ Ruff formatting handles line lengths, so that can be ignored.
 uv run ruff check $CODE tests --select E,F,W,S,B,C4,I,N --ignore E501 --fix
 ```
 
-If you get tired of this long command line, these rules can be configured in the `pyproject.toml` file:
+Configure this in the `pyproject.toml` file:
 ```toml
 [tool.ruff]
 select = [
