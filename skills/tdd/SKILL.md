@@ -80,6 +80,7 @@ Review the [@WORKFLOW.md](WORKFLOW.md) for a detailed workflow; in summary:
 - Use descriptive names and simple language so anyone can understand the intent without reading the code.
 - Tests must be independent of each other and test business rules and requirements, not implementation logic.
 - Mock external dependencies, not internal logic, and focus on behavior not implementation.
+  - Never mock or patch the function/unit the test claims to verify — if `foo()` is under test, do not mock `foo`; only mock what `foo` calls out to.
 - Tests should run in milliseconds, to keep the test suite fast.
   - Tests over a few dozen milliseconds should be set aside and not run every time (e.g., end-to-end integration and acceptance tests that get run only before frequent deployments).
 - If you add new tests, review how redundant the setup is with other tests, and clean up the code.

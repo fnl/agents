@@ -97,7 +97,7 @@ uv run pip-audit
 ```
 
 ## Code standards
-- Keep functions small (a few lines), single-purpose, and easy to test (if public).
+- FUNDAMENTAL: **Keep functions small (a few lines), single-purpose, and easy to test (if public).**
 - Ensure all public functions, interfaces, and non-private variables are type-checked and tested.
 - Always strive to reduce the size of the public API.
 - Never make an exception like "if TYPE_CHECKED: ...", assume all code is type-checked.
@@ -107,7 +107,7 @@ uv run pip-audit
 - Never add imports anywhere except at the head of the module.
 - Follow the SOLID principles when designing or writing code: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion.
 - Before writing manual conversion glue to bridge a third-party library with stdlib, check for a compat/interop submodule (e.g. `<pkg>.compat`).
-- Closed sets of string values used across call sites (error codes, statuses, taxonomies) should be an `Enum`, never repeated literals.
+- Closed sets of string values used across call sites (error codes, statuses, taxonomies) should be an `Enum`, never repeated literals. This applies equally to test code: assert against the `Enum` member, never the raw string.
 
 **Bad: opaque condition**
 ```python
