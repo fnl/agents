@@ -98,6 +98,7 @@ uv run pip-audit
 
 ## Code standards
 - FUNDAMENTAL: **Keep functions small (a few lines), single-purpose, and easy to test (if public).**
+- Main function at top, private helpers below in logical order.
 - Ensure all public functions, interfaces, and non-private variables are type-checked and tested.
 - Always strive to reduce the size of the public API.
 - Never make an exception like "if TYPE_CHECKED: ...", assume all code is type-checked.
