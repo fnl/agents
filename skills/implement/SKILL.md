@@ -4,7 +4,7 @@ description: "Implement a piece of work based on a PRD or set of issues."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the PRD or issues.
+Implement the work described by the user.
 
 Follow the [@GUIDELINES.md](GUIDELINES.md) for all your work:
 
