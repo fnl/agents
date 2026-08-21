@@ -89,11 +89,11 @@ A reference to the parent issue on the issue tracker (if the source was an exist
 
 ## User Story
 
-The Gherkin story (or stories, if applicable) that govern(s) this particular issue (if applicable, otherwise omit this section).
+The Gherkin story (or stories, if applicable) that govern(s) this particular issue (unless there is a good reason to omit them).
 
 ## Scenarios
 
-The [Gherkin-syntax.md](Tech/Software%20Development/Skills/to-issues/Gherkin-syntax.md) scenarios that should be implemented (if applicable, otherwise omit this section).
+The [Gherkin-syntax.md](Tech/Software%20Development/Skills/to-issues/Gherkin-syntax.md) scenarios that should be implemented (unless there are no governing user stories).
 
 ## What to build
 

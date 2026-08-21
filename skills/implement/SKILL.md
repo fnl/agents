@@ -21,4 +21,5 @@ Run typechecking regularly, single test files regularly, and the full test suite
 
 Once done, use /code-review to review the work.
 
-Commit your work to the current branch.
+Never add or commit your work, let the human operator review your work first,
+unless the user explicitly asked you to commit your work without their review.
