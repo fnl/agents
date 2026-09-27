@@ -1,0 +1,10 @@
+- Follow AI security frameworks such as MITRE ATLAS, the OWASP Top 10 for LLMs, and the NIST AI Risk Management Framework
+- Protect from direct, indirect, and cross-channel prompt-injection attacks
+- Prevent advanced jailbreaking and safety-filter bypass techniques
+- Protect from poisoned training data and RAG retrieval indexes
+- Prevent model-inversion, extraction, and model-theft attacks
+- Prohibit exploitation of multimodal weaknesses across text, image, audio, and video
+- Monitor for API flaws, unsafe model files, containers, and AI supply-chain risks
+- Know offensive AI tools and AI-assisted security workflows
+- Test MCP-related risks, including token theft and confused-deputy scenarios
+- Red-team AI guardrails through hands-on attack scenarios
