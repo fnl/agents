@@ -1,0 +1,8 @@
+# CHALLENGE
+- [ ] MEASURABLE SOLUTION-FREE GOAL
+
+## Red Lines
+- MUST NOT BE TRUE TO CONTINUE
+
+## Targets
+- [[]]
