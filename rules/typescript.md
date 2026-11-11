@@ -7,184 +7,15 @@ paths:
 ---
 
 # TypeScript development rules
-These rules describe how to develop TypeScript projects.
+Explicit project instructions and established repository conventions take precedence.
 
-## Use `pnpm`
-Use the `pnpm` package and project manager to operate all projects.
-
-If `pnpm` is not available in your node environment, use the following command to install `pnpm` for your node version:
-```bash
-corepack enable pnpm
-```
-
-Once in a dedicated directory, the project can be set up with the following steps:
-```bash
-pnpm init
-pnpm add -D typescript
-pnpm exec tsc --init
-git init -b main
-```
-
-## Directory structure
-- Source code is in `$CODE/` (e.g., `src/`, `mypack/`, etc.)
-- Tests are in `tests/`
-
-## Required tool use
-- All tools will be run via `pnpm exec` (do not invoke tools directly).
-- Prettier for formatting (might be "integrated" into ESLint)
-- ESLint (flat config) + `typescript-eslint` for linting
-- TypeScript (`tsc`) for type-checking and transpiling
-- `pnpm audit` for dependency check-ups
-- Vitest for tests
-
-Set up the project and install any missing tools into the project with `pnpm`:
-```bash
-pnpm add -D eslint @eslint/js typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-security prettier vitest
-````
-
-If the project has already been set up, there might be a concurrently-based watcher script ready in `package.json` to run all the tools, such as `pnpm dev` to run all. Remember to use `pnpm audit` on any package file changes. (Remember that prettier formatting can be built into the eslint watcher.)
-
-### Format the code with `prettier`
-Let prettier automatically fix as many issues as possible:
-```bash
-pnpm exec prettier --write "$CODE/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}" "tests/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}"
-```
-
-### Lint and auto-fix where possible
-Create an `eslint.config.mjs` config file in the root of your project, and populate it with the following code block to ensure strict, stylistic correct code:
-```typescript
-// @ts-check
-import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
-import tseslint from 'typescript-eslint';
-import security from 'eslint-plugin-security';
-
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.strict,
-  tseslint.configs.stylistic,
-  // Security plugin integration
-  {
-    files: ['**/*.{js,ts}'],
-    plugins: {
-      security,
-    },
-    rules: {
-      // Spread the recommended security rules
-      ...security.configs.recommended.rules,
-    },
-  },  
-);
-```
-
-Now you can use the ESLinter to surface and possibly fix any issues:
-```bash
-pnpm exec eslint --fix $CODE tests --ext .ts --max-warnings 0
-```
-
-### Write type-safe code
-Ensure `tsconfig.json` has `"strict": true` and then check for errors by not emitting the JS code:
-```bash
-pnpm exec tsc -p tsconfig.json --noEmit
-```
-
-### Do test-driven development
-Write tests before implementation. Follow the [/tdd](Tech/Agents/skills/tdd/SKILL.md) skill guidelines. And run the tests with `vitest`:
-
-```bash
-pnpm exec vitest run tests
-```
-
-### Audit dependencies
-Only needed when you add a new package of once in a while, to ensure no dependencies have known vulnerabilities.
-```bash
-pnpm audit
-```
+- Use `pnpm` for everything and run every tool via `pnpm exec`.
+- Set up new projects with the `typescript-project-setup` skill. Add the toolchain or its config to an existing project only when instructed.
+- Source lives in `$CODE/` (e.g., `src/`, `mypack/`); tests live in `tests/`.
+- Keep `"strict": true` in `tsconfig.json`.
+- Write failing tests first, following the `tdd` skill.
 
 ## Code standards
-
-### Function naming
-
-Take excessive care to provide clear names for functions the lead to readable prose.
-Instead of adding comments to complex code, consider extracting that code to a function that makes its purpose clear without the need of comments.
-
-**Bad: what does this condition mean?**
-```typescript
-if (user.role === 'admin' && 
-    user.verified &&
-    !user.suspended &&
-    Date.now() < user.expiresAt) {
-  showDashboard();
-}
-```
-
-**Good — names that eliminate the need for comments:**
-```typescript
-class User {
-  // ...
-  canAccessDashboard(): boolean {
-    return this.role === 'admin'
-      && this.verified
-      && !this.suspended
-      && !this.hasSessionExpired();
-  }
-
-  private hasSessionExpired(): boolean {
-    return Date.now() >= this.expiresAt;
-  }
-}
-
-if (user.canAccessDashboard()) {
-  showDashboard();
-}
-```
-
----
-
-**Bad: what is this doing?**
-```typescript
-function proc(data: string[]): string[] {
-  return data.filter(x => x.trim() !== '').map(x => x.toLowerCase().replace(/\s+/g, '-'));
-}
-```
-
-**Good: each transformation step has a name**
-```typescript
-function toUrlSlugs(tags: string[]): string[] {
-  return tags.filter(isNonEmpty).map(toSlug);
-}
-
-function isNonEmpty(s: string): boolean {
-  return s.trim() !== '';
-}
-
-function toSlug(s: string): string {
-  return s.toLowerCase().replace(/\s+/g, '-');
-}
-```
-
----
-
-**Bad: magic number, unclear intent**
-```typescript
-function calc(price: number, qty: number): number {
-  return price * qty * (1 - (qty >= 10 ? 0.15 : qty >= 5 ? 0.08 : 0));
-}
-```
-
-**Good: discount tiers made explicit**
-```typescript
-function applyBulkDiscount(price: number, quantity: number): number {
-  const discount = getBulkDiscountRate(quantity);
-  return price * quantity * (1 - discount);
-}
-
-function getBulkDiscountRate(quantity: number): number {
-  if (quantity >= 10) return 0.15;
-  if (quantity >= 5)  return 0.08;
-  return 0;
-}
-```
 
 ### Helper functions
 
@@ -227,22 +58,16 @@ while ((match = regex.exec(text)) !== null) {
 Do not use `I` prefixes for interface names. Prefer descriptive names like `TranslatorService` instead of `ITranslatorService`.
 
 ## Definition of Done
-After making a test green and the refactoring is done, ensure all tools pass or fix any issues. Unlike the type checking step instructions above, this time the JS code is emitted to make sure vitest runs on the latest TS code.
+After a test turns green and the refactoring is done, run these and fix every finding.
+If `package.json` already has a combined script (e.g., `pnpm dev` via concurrently), use it instead; skip the separate prettier step when ESLint runs prettier.
+
 ```bash
-pnpm exec prettier --write "$CODE/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}" "tests/**/*.{ts,tsx,js,jsx,json,md,yml,yaml}"
-pnpm exec eslint --fix $CODE tests --ext .ts --max-warnings 0
+pnpm exec prettier --write $CODE tests
+pnpm exec eslint --fix $CODE tests --max-warnings 0
 pnpm exec tsc -p tsconfig.json --build
-pnpm audit
 pnpm exec vitest run tests
 ```
 
-### Git pre-commit hooks to test DoD
-Set up Husky to manage your git hooks:
-```bash
-pnpm add -D husky lint-staged
-pnpm dlx husky init
-```
-The `husky init` command creates a `.husky` folder and a sample `pre-commit` hook file, and usually adds `"prepare": "husky"` to your `package.json` so hooks are installed after `pnpm install`.
-
-Add the above DoD steps to the `pre-commit` hook file.
+`tsc --build` emits JS so vitest runs against the latest TS code.
+After adding or changing a dependency, also run `pnpm audit`.
 

@@ -1,6 +1,6 @@
 ---
 paths:
-  - "**/*.{py,pyi,ipynb,ts,tsx,mts,cts,js,jsx,mjs,cjs,c,h,cc,cpp,cxx,hpp,hh,hxx,rs,cs,rb,php,go,java,kt,kts,swift,scala,sc,dart,ex,exs,erl,hrl,hs,lhs,lua,pl,pm,r,R,jl,sh,bash,zsh,fish,ps1,sql,groovy,gradle,m,mm,fs,fsx,vue,svelte,astro,clj,cljs,cljc,elm,zig,nim,sol,tf,nix,proto,graphql,html,css,scss}"
+  - "**/*.{py,pyi,ipynb,ts,tsx,mts,cts,js,jsx,mjs,cjs,vue,svelte,astro,c,h,cc,cpp,cxx,hpp,hh,hxx,ixx,cppm,rs,cs,csx,rb,rake,gemspec,ru,php,phtml,go,java,kt,kts,swift,scala,sc,dart,lua,pl,pm,t,jl,groovy,gradle}"
 ---
 
 # Coding Standards
