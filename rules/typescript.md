@@ -102,10 +102,6 @@ pnpm audit
 ```
 
 ## Code standards
-- Keep functions small, single-purpose, and testable.
-- Prefer explicit types at module boundaries and public APIs.
-- Prefer clarity in code over comments; only comment when logic is genuinely hard to understand.
-- DO NOT import code anywhere else than at the top of a code file.
 
 ### Function naming
 
@@ -190,10 +186,6 @@ function getBulkDiscountRate(quantity: number): number {
 }
 ```
 
-### Function ordering
-
-Main function at top, helpers below in logical order.
-
 ### Helper functions
 
 Use regular functions, not const arrows:
@@ -205,13 +197,6 @@ function goodHelper(param: string): RVal {
 
 const badHelper = (param: string): RVal => ({...})
 ```
-
-### Error handling
-
-- Define custom error types/classes
-- Never silently catch errors without handling
-- Use specific catch blocks instead of catching all errors
-- Log errors with sufficient context for debugging
 
 ### Async/await patterns
 
@@ -237,89 +222,9 @@ while ((match = regex.exec(text)) !== null) {
 }
 ```
 
-### Type Annotations
-
-Prefer explicit types for readability:
-
-```typescript
-const validIndices: number[] = indices.filter(...)
-```
-
-Prefer explicit types instead of `any`.
-
 ### Interface Naming
 
 Do not use `I` prefixes for interface names. Prefer descriptive names like `TranslatorService` instead of `ITranslatorService`.
-
-### Logging
-
-Use string interpolation, not object second argument (because the object doesn't appear on CLI logs):
-
-```typescript
-// Good
-logger.info(`[function] Message ${myVar}: ${otherVar}`)
-
-// Bad
-logger.info('[function] Message', { myVar, otherVar })
-```
-
-## Code Examples
-
-### Good Type Definition
-
-```typescript
-interface UserProfile {
-  id: string
-  email: string
-  displayName: string
-  isActive: boolean
-  createdAt: Date
-}
-
-interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
-}
-```
-
-### Good Error Handling
-
-```typescript
-class ValidationError extends Error {
-  constructor(
-    message: string,
-    public field: string,
-  ) {
-    super(message)
-    this.name = 'ValidationError'
-  }
-}
-
-try {
-  validateInput(input)
-} catch (error) {
-  if (error instanceof ValidationError) {
-    logger.warn(`Validation failed: ${error.field}`)
-  } else {
-    logger.error(`Unexpected error: ${error}`)
-  }
-}
-```
-
-### Good Async Pattern
-
-```typescript
-async function fetchUserData(userId: string): Promise<UserProfile> {
-  try {
-    const response = await apiClient.get<UserProfile>(`/users/${userId}`)
-    return response.data
-  } catch (error) {
-    logger.error(`Failed to fetch user ${userId}:`, error)
-    throw new Error(`Unable to retrieve user data`)
-  }
-}
-```
 
 ## Definition of Done
 After making a test green and the refactoring is done, ensure all tools pass or fix any issues. Unlike the type checking step instructions above, this time the JS code is emitted to make sure vitest runs on the latest TS code.
