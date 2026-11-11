@@ -1,4 +1,6 @@
 ---
+description: General coding standards for all source code.
+applyTo: "**/*.{py,pyi,ipynb,ts,tsx,mts,cts,js,jsx,mjs,cjs,vue,svelte,astro,c,h,cc,cpp,cxx,hpp,hh,hxx,ixx,cppm,rs,cs,csx,rb,rake,gemspec,ru,php,phtml,go,java,kt,kts,swift,scala,sc,dart,lua,pl,pm,t,jl,groovy,gradle}"
 paths:
   - "**/*.{py,pyi,ipynb,ts,tsx,mts,cts,js,jsx,mjs,cjs,vue,svelte,astro,c,h,cc,cpp,cxx,hpp,hh,hxx,ixx,cppm,rs,cs,csx,rb,rake,gemspec,ru,php,phtml,go,java,kt,kts,swift,scala,sc,dart,lua,pl,pm,t,jl,groovy,gradle}"
 ---

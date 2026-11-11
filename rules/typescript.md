@@ -1,4 +1,6 @@
 ---
+description: TypeScript toolchain, code standards, and Definition of Done.
+applyTo: "**/*.ts, **/eslint.config.mjs, **/tsconfig.json, **/package.json"
 paths:
   - "**/*.ts"
   - "eslint.config.mjs"

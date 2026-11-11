@@ -1,4 +1,6 @@
 ---
+description: Python toolchain, typing, and Definition of Done.
+applyTo: "**/*.py, **/pyproject.toml"
 paths:
   - "**/*.py"
   - "pyproject.toml"
