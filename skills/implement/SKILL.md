@@ -13,6 +13,8 @@ Follow the [@GUIDELINES.md](GUIDELINES.md) for all your work:
 3. Surgical Changes: **Touch only what you must. Clean up only your own mess.**
 4. Goal-Driven Execution: **Define success criteria upfront. Loop until verified.** 
 
+Follow the user rules, always: `coding-standard.md`, plus each language rule matching the files you change. Repo-documented standards (e.g., `CODING_STANDARDS.md`, `CONTRIBUTING.md`) take precedence. Pass these rules explicitly to any sub-agent that writes code.
+
 For an API behavior change, trace the changed value through the complete public path before declaring the slice complete: persistence or service result, handler, response model/schema, endpoint tests, integration tests where applicable, and user-facing documentation.
 
 **Use the /tdd skill wherever possible, at pre-agreed seams.**
