@@ -97,27 +97,7 @@ uv run pip-audit
 ```
 
 ## Code standards
-
-- FUNDAMENTAL: **Keep functions small (a few lines), single-purpose, and easy to test (if public).**
-- Main function at top, private helpers below in logical order.
-- Ensure all public functions, interfaces, and non-private variables are type-checked and tested.
-- Always strive to reduce the size of the public API.
-- Never make an exception like "if TYPE_CHECKED: ...", assume all code is type-checked.
-- Code should read like prose, revealing intent without needing explanation.
-- Use precise, descriptive names for functions, variables, and types.
-- Extract expressions and logic into well-named functions.
-- Each function should do one thing at one level of abstraction.
-- High-level functions should read as a sequence of meaningful steps.
-- Prefer guard clauses over deeply nested conditions.
-- Comments explain WHY, never WHAT. Create self-documenting code.
-- Favor clarity over cleverness, brevity, or premature abstraction.
-- Avoid unnecessary helpers and excessive fragmentation, keep code DRY.
-- Extract logic into short, well-named functions or classes that **describe intent**.
-- Never add imports anywhere except at the head of the module.
-- Follow the SOLID principles when designing or writing code.
-- Before writing manual conversion glue to bridge a third-party library with stdlib, check for a compat/interop submodule (e.g. `<pkg>.compat`).
-- Closed sets of string values used across call sites (error codes, statuses, taxonomies) should be an `Enum`, never repeated literals. This applies equally to test code: assert against the `Enum` member, never the raw string.
-
+### Expressive logic
 **Bad: opaque condition**
 ```python
 if user.role == 'admin' and \
@@ -144,25 +124,10 @@ if user.can_access_dashboard():
     show_dashboard()
 ```
 
-### Error handling
-- Define custom error types/classes
-- Never silently catch errors without handling
-- Use specific catch blocks instead of catching all errors
-- Log errors with sufficient context for debugging (e.g. user ID, document ID, relevant settings)
-
 ### Logging
 - Provide context through `LoggerAdapater` and `Filter` classes.
 - Capture and track context with the `contextvars` StdLib package.
 - Refer to https://docs.python.org/3/howto/logging.html and https://docs.python.org/3/howto/logging-cookbook.html for proper logging practices.
-
-### Dependencies
-- ONLY ADD DEPENDENCIES WHEN NEEDED.
-- Do not add dependencies just because they are planned.
-- Only add a dependency when writing code that needs it.
-- Only add dependencies ad hoc if the project does not compile or start because of a missing dependency.
-
-### Documentation
-- When creating code blocks in documentation, do not add comments inside the code blocks; Add the comments outside, in the text area.
 
 ## Definition of Done
 After making a test green and the refactoring is done, ensure all tools pass or fix any issues.
