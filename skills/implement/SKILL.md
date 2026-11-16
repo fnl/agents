@@ -1,7 +1,6 @@
 ---
 name: implement
-description: "Implement a piece of work based on a PRD or set of issues."
-disable-model-invocation: true
+description: Implement work from a specification or issues. Use when implementing a planned piece of work.
 ---
 
 Implement the work described by the user.
