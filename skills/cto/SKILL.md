@@ -1,12 +1,12 @@
 ---
 name: cto
-description: CTO orchestration from a local project and task to a verified draft pull request for human review.
+description: CTO orchestration from a local project and task to a verified pull request ready for human review.
 disable-model-invocation: true
 ---
 
 # CTO (Chief Technology Officer)
 
-Orchestrate development through independent sessions; deliver a draft pull request (PR).
+Orchestrate development through independent sessions; deliver a verified pull request (PR) ready for human review.
 Example: `/cto ~/src/shop "Fix duplicate checkout submissions"` or `/cto owner/shop #123`.
 Install this skill in the harness's user-level skill directory to invoke it from anywhere.
 
@@ -45,11 +45,11 @@ Verify the worktree root, branch, clean status, and starting commit; retain the 
 ## 4. Delegate implementation
 
 Start a fresh session of an installed coding agent inside the worktree. Inspect its command help for supported invocation options; do not assume Pi, Codex, or Claude Code share flags or session controls.
-Pass the issue/plan, acceptance criteria, absolute worktree and skill paths, project rules, check commands, and the instruction to read and follow `implement` and `tdd` where applicable. `implement` is user-invoked: supply its instructions explicitly when the harness cannot invoke it from another skill.
+Pass the issue/plan, acceptance criteria, absolute worktree and skill paths, project rules, and check commands. Require the implementation session to invoke `implement` before coding and use `tdd` where applicable. If the harness lacks a skill invocation mechanism, require it to load and execute the linked `implement/SKILL.md` directly; if unavailable, stop and report the blocker.
 Tell the implementer to leave changes uncommitted and report changed files, checks, and blockers; the orchestrator owns review checkpoints and the independent review below.
 If sessions cannot be launched, provide the exact working directory and handoff prompt for the human to start one; pause dependent work. Do not substitute self-review for independence.
 
-**Done:** implementation session has finished, its changes are in the isolated worktree, and its report accounts for every acceptance criterion or blocker.
+**Done:** implementation session confirms it ran `implement`, has finished with changes in the isolated worktree, and reports evidence for every acceptance criterion or blocker.
 
 ## 5. Verify and checkpoint
 
@@ -72,7 +72,7 @@ After three unsuccessful cycles, or an unrecoverable blocker, stop and report ev
 ## 7. Deliver for human review
 
 Summarize the final diff, commits, checks, review outcome, issue, and proposed remote/branch. Request explicit push approval if none already covers this work; wait for it before any push.
-Push only the feature branch to the verified remote, then create a draft PR against the recorded base branch using `gh pr create --draft` or the GitHub integration. Link the issue and include validation and any limitations.
-If pushing or PR creation fails, report the actual remote state and resume only the failed step; check for an existing PR before retrying creation. Never mark a draft ready or merge it.
+Push only the feature branch to the verified remote, then create a non-draft PR against the recorded base branch using `gh pr create` or the GitHub integration. Link the issue and include validation and any limitations. If resuming an existing draft, mark it ready only after the preceding gates pass.
+If pushing or PR creation fails, report the actual remote state and resume only the failed step; check for an existing PR before retrying creation. Never merge it.
 
-**Done:** verify the PR URL, draft status, base, and head commit. Return the URL, concise change/validation summary, and retained worktree path; distinguish pending remote checks from local passes.
+**Done:** verify the PR URL, non-draft status, base, and head commit. Return the URL, concise change/validation summary, and retained worktree path; distinguish pending remote checks from local passes and do not claim production readiness while required checks remain pending or failed.
