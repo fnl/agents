@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implement work from a specification or issues. Use when the user requests implementation or another skill, including cto, delegates implementation.
+description: Implement work from a specification or issues. Use when implementing a planned piece of work.
 ---
 
 Implement the work described by the user.
