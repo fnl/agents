@@ -18,6 +18,14 @@ Install this skill in the harness's user-level skill directory to invoke it from
 - Run stages in order; do not mark a stage complete without its evidence. Preserve unrelated changes; never reset, stash, clean, or delete existing work to proceed.
 - Only the orchestrator commits or pushes. Never push without explicit human approval for this branch and scope; an earlier explicit approval counts. Never merge or modify the base branch directly.
 
+## Present plans and requests with Plannotator
+
+Use Plannotator whenever presenting a plan to the user, and its Inbox for clarification, test-seam agreement, scope decisions, blockers, and push-approval requests. Keep this integration here; do not add dependencies to `implement`.
+Inspect the installed tools and `plannotator --help` / `plannotator inbox --help`; follow the [Inbox documentation](https://plannotator.ai/docs/reference/inbox/). Prefer the available integration; otherwise use `plannotator inbox call <action> -` with structured input. If a local Inbox must be started, use `plannotator inbox --background` and report its address.
+Present the versioned plan through the available plan-review/annotation interface or as an annotatable Inbox attachment. Include the issue, acceptance criteria, and decisions needed. Send requests with `send_message` in one task-specific Inbox thread, using `:::question` blocks for decisions and `:::action` only for actions the user must perform elsewhere; save thread/message identifiers in the handoff.
+Receive replies through the integration, or use `read_thread` when automatic delivery is unavailable. Continue independent work while waiting; keep dependent stages blocked until required answers arrive. Unanswered, skipped, or timed-out requests are not approval. Plan approval never implies push approval.
+Incorporate annotations and decisions into the issue and implementation handoff before coding; present materially revised plans again. If Plannotator is missing or unreachable, report that and present the same plan/requests in chat, preserving all approval gates. Do not claim delivery to Inbox without a successful result.
+
 ## 1. Discover the project
 
 Accept a local path, repository name, or owner/name plus a task or issue. Resolve an explicit path first; otherwise inspect known workspace roots and common checkout directories using bounded filesystem searches, including `.git` files for worktrees.
@@ -33,7 +41,7 @@ Reuse the supplied issue or search for an existing matching issue before creatin
 Read [implement](../implement/SKILL.md) and [tdd](../tdd/SKILL.md). Agree test seams with the user when new tests are needed unless already explicitly agreed; resolve material ambiguity before implementation.
 Confirm the intended base branch and record the fetched remote base commit. Record a retry budget: at most three implementation/check/review cycles by default.
 
-**Done:** issue URL, acceptance criteria, scope, applicable standards, verification commands, and any required seam agreement recorded.
+**Done:** plan presented through Plannotator (or the reported chat fallback); issue URL, acceptance criteria, scope, applicable standards, verification commands, user feedback, and any required seam agreement recorded, with required decisions resolved.
 
 ## 3. Isolate the work
 
