@@ -27,6 +27,7 @@ Skip rules that do not apply to the language at hand.
 - Give each function, class, and module one cohesive responsibility.
 - Order *new* code you write top-down: public and high-level functions first, the helpers they call below them. Where the language requires definition before use, follow the language.
 - Extract a named function when a block could use a comment to explain what it does, or has more lines than can be grasped quickly.
+- Extract conditionals with Boolean logic into functions with domain-specific names to make them easier to understand.
 - Prefer explicit control flow and guard clauses over clever expressions and deep nesting.
 - Encapsulate implementation details behind minimal interfaces at meaningful boundaries.
 - Keep business logic free of direct infrastructure, I/O, and framework calls, ideally at module level.
