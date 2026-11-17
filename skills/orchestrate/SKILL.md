@@ -1,13 +1,13 @@
 ---
-name: cto
-description: CTO orchestration from a local project and task to a verified pull request ready for human review.
+name: orchestrate
+description: Orchestrate software development from a local project and task to a verified pull request ready for human review.
 disable-model-invocation: true
 ---
 
-# CTO (Chief Technology Officer)
+# Orchestrate
 
 Orchestrate development through independent sessions; deliver a verified pull request (PR) ready for human review.
-Example: `/cto ~/src/shop "Fix duplicate checkout submissions"` or `/cto owner/shop #123`.
+Example: `/orchestrate ~/src/shop "Fix duplicate checkout submissions"` or `/orchestrate owner/shop #123`.
 Install this skill in the harness's user-level skill directory to invoke it from anywhere.
 
 ## Operating contract
@@ -63,7 +63,7 @@ If sessions cannot be launched, provide the exact working directory and handoff 
 
 Run the project's required tests, lint, type checking, build, and other relevant checks inside the worktree. Inspect the full diff and check acceptance criteria, including any manual checks.
 Feed failures back to the implementation session and rerun affected checks plus required final suites after fixes. Never suppress failures, weaken checks, or call an unavailable check a pass.
-After checks pass, stage only task changes and create a local checkpoint commit following `git`; invoking `/cto` authorizes these local commits. This supplies the committed diff required by `code-review`.
+After checks pass, stage only task changes and create a local checkpoint commit following `git`; invoking `/orchestrate` authorizes these local commits. This supplies the committed diff required by `code-review`.
 
 **Done:** required checks pass, inapplicable checks are explained, acceptance evidence is recorded, and all task changes are committed with a clean worktree.
 
