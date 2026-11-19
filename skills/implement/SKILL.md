@@ -5,6 +5,8 @@ description: Implement work from a specification or issues. Use when implementin
 
 Implement the work described by the user.
 
+If the user passes a ticket reference, fetch it from the issue tracker and state its title before starting. If the reference is ambiguous, ask.
+
 Follow the [@GUIDELINES.md](GUIDELINES.md) for all your work:
 
 1. Think Before Coding: **Don't assume. Don't hide confusion. Surface tradeoffs.**
@@ -16,11 +18,11 @@ Follow the user rules, always: `coding-standard.md`, plus each language rule mat
 
 For an API behavior change, trace the changed value through the complete public path before declaring the slice complete: persistence or service result, handler, response model/schema, endpoint tests, integration tests where applicable, and user-facing documentation.
 
-**Use the /tdd skill wherever possible, at pre-agreed seams.**
+Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
-Once done, use /code-review to review the work.
+Once done, call the Skill tool with "code-review" to review the work.
 
 Never add or commit your work, let the human operator review your work first,
 unless the user explicitly asked you to commit your work without their review.
