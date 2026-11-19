@@ -45,7 +45,8 @@ Confirm the intended base branch and record the fetched remote base commit. Reco
 
 ## 3. Isolate the work
 
-Choose an unused feature branch and worktree path. Run `git -C <repo> worktree add -b <branch> <absolute-worktree> <base-commit>` without switching the original checkout.
+Verify if the current location is already an isolated worktree in a separate feature branch.
+If not, choose an unused feature branch and worktree path. Run `git -C <repo> worktree add -b <branch> <absolute-worktree> <base-commit>` without switching the original checkout.
 Verify the worktree root, branch, clean status, and starting commit; retain the original checkout's status for comparison.
 
 **Done:** dedicated clean worktree on the feature branch at the recorded base, with existing work preserved.
